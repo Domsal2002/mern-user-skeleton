@@ -11,6 +11,7 @@ const newUserValidation = data => {
   return registerValidationSchema.safeParse(data)
 };
 
+  
 //validate user request when logging in
 const userLoginValidation = data => {
   const loginValidationSchema = z.object({

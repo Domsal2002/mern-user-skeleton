@@ -1,4 +1,4 @@
-POST http://localhost:8080/user/signup
+POST http://localhost:8081/user/signup
 Content-Type: application/json 
 
 {
@@ -50,3 +50,27 @@ Content-Type: application/json
 
 ###
 POST  http://localhost:8081/user/deleteAll
+
+
+// Comment CRUD request testing
+###
+POST http://localhost:8081/comment/postComment
+Content-Type: application/json
+
+{
+    "username": "testName",
+    "text": "this is a comment about a station"
+}
+
+###
+GET http://localhost:8081/comment/getAll
+Content-Type: application/json
+
+###
+PUT POST http://localhost:8081/comment/editComment
+Content-Type: application/json
+
+{
+    
+}
+

@@ -17,7 +17,7 @@ const commentSchema = new mongoose.Schema(
       required: true,
       type: Date,
       default: Date.now,
-    }, 
+    },
   },
   { collection: "comments" }
 );

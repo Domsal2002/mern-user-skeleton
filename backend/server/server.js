@@ -14,7 +14,7 @@ require('dotenv').config();
 const SERVER_PORT = 8081
 
 dbConnection()
-app.use(cors({origin: '*'}))
+app.use(cors({ origin: '*' }))
 app.use(express.json())
 app.use('/user', loginRoute)
 app.use('/user', registerRoute)

@@ -53,19 +53,19 @@ router.put('/editComment/:id', async (req, res) => {
 router.delete('/deleteComment/:id', async (req, res) => {
     try {
         const commentId = req.params.id;
-    
+
         // Find the comment by ID and delete it
         const deletedComment = await commentModel.findByIdAndDelete(commentId);
-    
+
         if (!deletedComment) {
-          return res.status(404).json({ error: "Comment not found" });
+            return res.status(404).json({ error: "Comment not found" });
         }
-    
+
         res.json({ message: "Comment deleted successfully" });
-      } catch (error) {
+    } catch (error) {
         console.error(error);
         res.status(500).json({ error: "Internal server error" });
-      }
+    }
 })
 
 module.exports = router;

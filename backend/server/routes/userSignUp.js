@@ -5,6 +5,7 @@ const bcrypt = require("bcrypt");
 const { newUserValidation } = require('../models/userValidator')
 const newUserModel = require('../models/userModel')
 
+
 router.post('/signup', async (req, res) => {
     const { error } = newUserValidation(req.body);
     console.log(error)

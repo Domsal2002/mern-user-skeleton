@@ -54,14 +54,13 @@ POST  http://localhost:8081/user/deleteAll
 
 // START Comment CRUD request testing ~~~~~~~~~~~~~~~~~~~~~~
 ###
-
 // CREATE A COMMENT
 POST http://localhost:8081/comment/postComment
 Content-Type: application/json
 
 {
     "username": "testName",
-    "text": "this is a comment about a station"
+    "text": "This is a comment"
 }
 
 // GET COMMENTS
@@ -71,7 +70,7 @@ Content-Type: application/json
 
 // UPDATE A COMMENT
 ###
-PUT http://localhost:8081/comment/editComment/65e21ec1e337b53d298d2866
+PUT http://localhost:8081/comment/editComment/65e754c5ad9e33d59f32060e
 Content-Type: application/json
 
 {
@@ -80,7 +79,7 @@ Content-Type: application/json
 
 // DELETE A COMMENT
 ###
-DELETE http://localhost:8081/comment/deleteComment/65e22081f6e3a8db3d3cb2a4
+DELETE http://localhost:8081/comment/deleteComment/65e757bab1d757993305ad3f
 Content-Type: application/json
 
 // END Comment CRUD testing ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

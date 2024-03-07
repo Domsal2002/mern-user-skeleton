@@ -6,28 +6,7 @@ Content-Type: application/json
     "email" : "cdon@gmail.com",
     "password" : "tochi12345"
 }
-###
-# Example for Creating Admin
 
-#Create User
-POST http://localhost:8081/user/signup
-Content-Type: application/json 
-
-{
-    "username" : "admintest",
-    "email" : "cdon@gmail.com",
-    "password" : "tochi12345"
-}
-
-#Promote User 
-POST http://localhost:8081/admin/grantAdmin/admintest
-Content-Type: application/json
-
-
-
-
-###
-###
 
 POST http://localhost:8080/user/login
 Content-Type: application/json 
@@ -90,7 +69,7 @@ Content-Type: application/json
 
 // UPDATE A COMMENT
 ###
-PUT http://localhost:8081/comment/editComment/65e754c5ad9e33d59f32060e
+PUT http://localhost:8081/comment/editComment/65e9e43ba2b3dd4f1d4828a2
 Content-Type: application/json
 
 {
@@ -99,7 +78,28 @@ Content-Type: application/json
 
 // DELETE A COMMENT
 ###
-DELETE http://localhost:8081/comment/deleteComment/65e757bab1d757993305ad3f
+DELETE http://localhost:8081/comment/deleteComment/65e9e43ba2b3dd4f1d4828a2
 Content-Type: application/json
 
 // END Comment CRUD testing ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+###
+# Example for Creating Admin
+
+#Create User
+POST http://localhost:8081/user/signup
+Content-Type: application/json 
+
+{
+    "username" : "admintest",
+    "email" : "cdon@gmail.com",
+    "password" : "tochi12345"
+}
+
+#Promote User 
+###
+POST http://localhost:8081/admin/grantAdmin/admintest
+Content-Type: application/json
+
+
+###

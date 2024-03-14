@@ -13,6 +13,18 @@ const profileSchema = new mongoose.Schema(
       required: true,
       label: "text",
     },
+    email: {
+      type: String,
+      required: true,
+      label: "email",
+    },
+    password: {
+      required: true,
+      type: String,
+      min : 8
+    },
+    
+    
   },
   { collection: "profiles" }
 );

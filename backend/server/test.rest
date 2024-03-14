@@ -104,6 +104,39 @@ Content-Type: application/json
 
 ###
 
+#PROFILE Example
+#Get All Profiles
 ###
 GET http://localhost:8081/profile/getAll
 Content-Type: application/json
+
+#Edit Profile
+###
+POST http://localhost:8081/profile/editProfile
+Content-Type: application/json
+
+{
+    "username" : "msaintcyr", 
+    "password" : "mac1234"
+}
+
+#Delete Profile
+###
+DELETE http://localhost:8081/profile/deleteProfile
+Content-Type: application/json
+
+{
+    "message" : "the profile has been deleted"
+}
+
+#Create Profile
+###
+POST http://localhost:8081/profile/createProfile
+Content-Type: application/json
+
+{
+    "username" : "makenleytest",
+    "email" : "msc@gmail.com",
+    "password" : "testi12345",
+    "bio" : "I am from Medford"
+}

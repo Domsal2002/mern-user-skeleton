@@ -8,10 +8,6 @@ const adminSchema = new mongoose.Schema(
       required: true,
       label: "username",
     },
-    admin: {
-      type: Boolean,
-      required: true,
-    },
     time: {
       required: true,
       type: Date,

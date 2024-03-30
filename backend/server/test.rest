@@ -4,6 +4,7 @@
 
 POST http://localhost:8081/user/signup
 Content-Type: application/json 
+
 {
     "username" : "admintest",
     "email" : "cdon@gmail.com",
@@ -14,9 +15,11 @@ Content-Type: application/json
 GET http://localhost:8081/user/getAll
 Content-Type: application/json
 
+
 ###
 POST http://localhost:8081/user/editUser
 Content-Type: application/json 
+
 {
     "userId" : "635ab8dfc407faf9f73deaf2",
     "username" : "Tochi Edit",
@@ -26,6 +29,7 @@ Content-Type: application/json
 ###
 POST http://localhost:8080/user/login
 Content-Type: application/json 
+
 {
     "username" : "tochiamanze",
     "password" : "tochi12345"
@@ -34,6 +38,7 @@ Content-Type: application/json
 ###
 GET  http://localhost:8081/user/getUserById
 Content-Type: application/json 
+
 {
     "userId" : "635ab8dfc407faf9f73deaf1"
 }
@@ -41,14 +46,20 @@ Content-Type: application/json
 ##################################################################
 #######################Admin Routes#############################
 
-POST http://localhost:8081/admin/grantAdmin/admintest
-Content-Type: application/json
+POST http://localhost:8081/admin/grantAdmin
+Content-Type: application/json 
+
+{
+    "username" : "test_admin",
+    "admin" : true 
+}
 
 ##################################################################
 #######################Comment Routes#############################
 
 POST http://localhost:8081/comment/postComment
 Content-Type: application/json
+
 {
     "username": "testName",
     "text": "This is a comment"
@@ -63,6 +74,7 @@ Content-Type: application/json
 ###
 PUT http://localhost:8081/comment/editComment/65e9e43ba2b3dd4f1d4828a2
 Content-Type: application/json
+
 {
     "text": "This comment was updated using editComment route"
 }
@@ -85,6 +97,7 @@ Content-Type: application/json
 ###
 POST http://localhost:8081/profile/editProfile
 Content-Type: application/json
+
 {
     "username" : "msaintcyr", 
     "password" : "mac1234"
@@ -94,6 +107,7 @@ Content-Type: application/json
 ###
 DELETE http://localhost:8081/profile/deleteProfile
 Content-Type: application/json
+
 {
     "message" : "the profile has been deleted"
 }
@@ -102,6 +116,7 @@ Content-Type: application/json
 ###
 POST http://localhost:8081/profile/createProfile
 Content-Type: application/json
+
 {
     "username" : "makenleytest",
     "email" : "msc@gmail.com",

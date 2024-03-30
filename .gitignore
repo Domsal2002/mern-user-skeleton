@@ -2,3 +2,4 @@
 **/.DS_Store
 /node_modules
 frontend/.env
+lib/junit-platform-console-standalone-1.10.2.jar

@@ -50,7 +50,7 @@ POST http://localhost:8081/admin/grantAdmin
 Content-Type: application/json 
 
 {
-    "username": "test_admin",
+    "username": "test_admin"
 }
 
 ###

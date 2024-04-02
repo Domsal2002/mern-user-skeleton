@@ -45,7 +45,7 @@ const CommentForm = () => {
 
   function refreshPage() {
     window.location.reload();
-  }
+  };
 
   return (
     <div>

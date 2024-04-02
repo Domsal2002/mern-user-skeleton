@@ -12,6 +12,8 @@ import Signup from "./components/pages/registerPage";
 import PrivateUserProfile from "./components/pages/privateUserProfilePage";
 import { createContext, useState, useEffect } from "react";
 import getUserInfo from "./utilities/decodeJwt";
+import AdminPage from "./components/pages/adminPage";
+import CommentPage from "./components/pages/commentPage";
 
 
 export const UserContext = createContext();
@@ -35,7 +37,8 @@ const App = () => {
           <Route exact path="/login" element={<Login />} />
           <Route exact path="/signup" element={<Signup />} />
           <Route path="/privateUserProfile" element={<PrivateUserProfile />} />
-          
+          <Route path="/admin" element={<AdminPage />} />
+          <Route path="/commentPage" element={<CommentPage />} />
         </Routes>
       </UserContext.Provider>
     </>

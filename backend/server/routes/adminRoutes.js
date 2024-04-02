@@ -1,32 +1,30 @@
 const express = require("express");
 const router = express.Router();
 const bcrypt = require("bcrypt");
-const UserModel = require('../models/userModel');
+const adminModel = require('../models/adminModel');
 
-router.post('/grantAdmin/:username', async (req, res) => {
-    const username = req.params.username;
+router.post('/grantAdmin', async (req, res) => {
+    const { username } = req.body;
 
     try {
-        // Find the user by username
-        const user = await UserModel.findOne({ username: username });
+        // Check if admin with the given username already exists
+        const existingAdmin = await adminModel.findOne({ username: username });
         
-        // Check if user exists
-        if (!user) {
-            return res.status(404).send({ message: "User not found" });
+        // If admin already exists, return error
+        if (existingAdmin) {
+            return res.status(400).send({ message: "Admin with this username already exists" });
         }
 
-        // Check if the user is already an admin
-        if (user.isAdmin) {
-            return res.status(400).send({ message: "User is already an admin" });
-        }
+        // Create a new admin
+        const newAdmin = new adminModel({
+            username: username,
+            isAdmin: true // Assuming the newly created admin should have admin privileges
+        });
 
-        // Mark the user as an admin
-        user.isAdmin = true;
+        // Save the new admin to the database
+        await newAdmin.save();
 
-        // Save the updated user
-        await user.save();
-
-        res.send({ message: "User has been granted admin privileges" });
+        res.send({ message: "Admin has been created and granted admin privileges" });
     } catch (error) {
         console.error(error);
         res.status(500).send({ message: "Internal server error" });

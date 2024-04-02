@@ -11,6 +11,7 @@ const deleteUser = require('./routes/userDeleteAll');
 const commentRoute = require('./routes/commentRoutes');
 const createAdminRoute = require('./routes/adminRoutes');
 const getAllAdminsRoute = require('./routes/adminGetAllRoute'); // Import the new route
+const deleteAdminRoute = require('./routes/adminDelete'); // Import the new route
 const profileRoute = require('./routes/profileRoutes');
 
 require('dotenv').config();
@@ -30,6 +31,7 @@ app.use('/user', deleteUser);
 app.use('/comment', commentRoute);
 app.use('/admin', createAdminRoute);
 app.use('/admin', getAllAdminsRoute);
+app.use('/admin', deleteAdminRoute); // Mount the new route here
 app.use('/profile', profileRoute);
 
 app.listen(SERVER_PORT, () => {

@@ -57,6 +57,15 @@ Content-Type: application/json
 GET http://localhost:8081/admin/getAllAdmins
 Content-Type: application/json
 
+###
+DELETE http://localhost:8081/admin/deleteAdmin
+Content-Type: application/json
+
+{
+    "username": "test_admin"
+}
+
+
 ##################################################################
 #######################Comment Routes#############################
 

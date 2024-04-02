@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 
 const AdminPage = () => {
   const [admins, setAdmins] = useState([]);
+  const [hoveredAdmin, setHoveredAdmin] = useState(null); // State to track hovered admin
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -29,6 +30,29 @@ const AdminPage = () => {
     navigate("/");
   };
 
+  const handleDeleteAdmin = async (username) => {
+    try {
+      const response = await fetch("http://localhost:8081/admin/deleteAdmin", {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          username: username,
+        }),
+      });
+      if (response.ok) {
+        // If deletion successful, fetch updated list of admins
+        const updatedAdmins = admins.filter((admin) => admin.username !== username);
+        setAdmins(updatedAdmins);
+      } else {
+        throw new Error("Failed to delete admin");
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
     <div className="container">
       <div className="col-md-12 text-center">
@@ -44,7 +68,23 @@ const AdminPage = () => {
             <Card.Body>
               <ul>
                 {admins.map((admin, index) => (
-                  <li key={index}>{admin.username}</li>
+                  <li
+                    key={index}
+                    onMouseEnter={() => setHoveredAdmin(admin.username)} // Set hovered admin
+                    onMouseLeave={() => setHoveredAdmin(null)} // Reset hovered admin
+                  >
+                    {admin.username}
+                    {hoveredAdmin === admin.username && ( // Display delete button only when hovered
+                      <Button
+                        className="ms-2"
+                        variant="danger"
+                        size="sm"
+                        onClick={() => handleDeleteAdmin(admin.username)}
+                      >
+                        Delete
+                      </Button>
+                    )}
+                  </li>
                 ))}
               </ul>
             </Card.Body>

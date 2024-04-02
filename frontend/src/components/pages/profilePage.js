@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Card from 'react-bootstrap/Card';
 import axios from 'axios';
 
-function profilePage() {
+function ProfilePage() {
   const [profiles, setProfiles] = useState([]);
 
 
@@ -33,4 +33,4 @@ function profilePage() {
   );
 }
 
-export default profilePage;
+export default ProfilePage;

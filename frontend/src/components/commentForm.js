@@ -43,6 +43,10 @@ const CommentForm = () => {
     }
   };
 
+  function refreshPage() {
+    window.location.reload();
+  }
+
   return (
     <div>
       <h2>Post a Comment</h2>
@@ -69,7 +73,7 @@ const CommentForm = () => {
           {errors.text && <div className="error">{errors.text}</div>}
         </div>
         <div>
-          <button type="submit" disabled={isSubmitting}>
+          <button type="submit" disabled={isSubmitting} onClick={refreshPage}>
             Submit
           </button>
         </div>

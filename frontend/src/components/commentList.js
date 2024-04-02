@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import Card from 'react-bootstrap/Card';
+
 
 const CommentsList = () => {
   const [comments, setComments] = useState([]);
@@ -34,12 +36,15 @@ const CommentsList = () => {
       <h2>Comments</h2>
       <div className="comments-list">
         {comments.map((comment) => (
-          <div key={comment._id} className="comment-card">
-            <h3>{comment.username}</h3>
-            <p>{comment.text}</p>
-            <p>{new Date(comment.time).toLocaleString()}</p>
-          </div>
-        ))}
+        <Card body outline color="blue" className="mx-1 my-2" bg="danger" style={{ width: "30rem" }}>
+        <Card.Body>
+        <Card.Title>Comment</Card.Title>
+        <Card.Text>{comment.username}</Card.Text>
+        <Card.Text>{comment.text}</Card.Text>
+        <Card.Text>{new Date(comment.time).toLocaleString()}</Card.Text>
+        </Card.Body>
+      </Card>
+      ))}
       </div>
     </div>
   );

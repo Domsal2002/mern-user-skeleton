@@ -4,11 +4,12 @@ const commentModel = require("../models/commentModel");
 
 // post/create comment route
 router.post('/postComment', async (req, res) => {
-    const { username, text } = req.body
+    const { username, text, stopID } = req.body
 
     const createComment = new commentModel({
-        username: req.body.username,
-        text: req.body.text
+        username,
+        text,
+        stopID
     })
 
     try {
@@ -67,5 +68,17 @@ router.delete('/deleteComment/:id', async (req, res) => {
         res.status(500).json({ error: "Internal server error" });
     }
 })
+
+// Get comments by stopID
+router.get('/getByStop/:stopID', async (req, res) => {
+    try {
+        const stopID = req.params.stopID;
+        const comments = await Comment.find({ stopID });
+        res.json(comments);
+    } catch (error) {
+        res.status(500).json({ message: 'Error fetching comments', error });
+    }
+});
+
 
 module.exports = router;

@@ -1,11 +1,11 @@
-// components/pages/commentPage.js
 import React, { useState, useEffect } from 'react';
 import CommentForm from '../commentForm';
-import CommentList from '../commentList';
+import CommentsList from '../commentList';
 import axios from 'axios';
 
 const CommentPage = () => {
   const [comments, setComments] = useState([]);
+  const [selectedStop, setSelectedStop] = useState(null);  // Add selectedStop state
 
   useEffect(() => {
     const fetchComments = async () => {
@@ -27,8 +27,12 @@ const CommentPage = () => {
   return (
     <div>
       <h1>Comment Page</h1>
-      <CommentForm onCommentPosted={handleCommentPosted} />
-      <CommentList comments={comments} />
+      <CommentForm selectedStop={selectedStop} />  {/* Pass selectedStop as prop */}
+      <CommentsList
+        comments={comments}
+        selectedStop={selectedStop}  // Pass selectedStop as prop
+        onSelectStop={(stopID) => setSelectedStop(stopID)}  // Update selectedStop
+      />
     </div>
   );
 };

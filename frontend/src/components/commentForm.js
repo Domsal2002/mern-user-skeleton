@@ -1,7 +1,7 @@
 import React, { useState, useRef } from 'react';
 import axios from 'axios';
 
-const CommentForm = () => {
+const CommentForm = ({ selectedStop }) => {
   const [username, setUsername] = useState('');
   const [text, setText] = useState('');
   const [errors, setErrors] = useState({});
@@ -31,6 +31,7 @@ const CommentForm = () => {
       await axios.post('http://localhost:8081/comment/postComment', {
         username,
         text,
+        stopID: selectedStop,  // Include selectedStop
       });
       alert('Comment submitted successfully');
       setUsername('');
@@ -83,3 +84,4 @@ const CommentForm = () => {
 };
 
 export default CommentForm;
+

@@ -8,37 +8,37 @@ const CommentsList = () => {
   const [comments, setComments] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [selectedStop, setSelectedStop] = useState(null);
-  const [stops, setStops] = useState([]);
+  const [selectedLine, setSelectedLine] = useState(null);
+  const [lines, setLines] = useState([]);
 
   useEffect(() => {
-    // Fetch stops from MBTA API
-    const fetchStops = async () => {
+    // Fetch lines from MBTA API
+    const fetchLines = async () => {
       try {
-        const response = await axios.get('https://api-v3.mbta.com/stops');
-        const stopsData = response.data.data.map(stop => ({
-          id: stop.id,
-          name: stop.attributes.name
+        const response = await axios.get('https://api-v3.mbta.com/lines');
+        const linesData = response.data.data.map(line => ({
+          id: line.id,
+          name: line.attributes.long_name
         }));
-        setStops(stopsData);
+        setLines(linesData);
       } catch (err) {
-        console.error("Error fetching stops:", err);
+        console.error("Error fetching lines:", err);
       }
     };
 
-    fetchStops();
+    fetchLines();
   }, []);
 
   useEffect(() => {
-    // Fetch comments based on selected stop
+    // Fetch comments based on selected line
     const fetchComments = async () => {
-      if (!selectedStop) {
+      if (!selectedLine) {
         setIsLoading(false);
         return;
       }
 
       try {
-        const response = await axios.get(`http://localhost:8081/comment/getByStop/${selectedStop}`);
+        const response = await axios.get(`http://localhost:8081/comment/getByLine/${selectedLine}`);
         setComments(response.data);
         setIsLoading(false);
       } catch (err) {
@@ -48,7 +48,7 @@ const CommentsList = () => {
     };
 
     fetchComments();
-  }, [selectedStop]);
+  }, [selectedLine]);
 
   const handleDeleteComment = async (_id) => {
     try {
@@ -82,38 +82,41 @@ const CommentsList = () => {
       <h2>Comments</h2>
       <Dropdown>
         <Dropdown.Toggle variant="primary" id="dropdown-basic">
-          Select Stop
+          Select Line
         </Dropdown.Toggle>
         <Dropdown.Menu>
-          {stops.map((stop) => (
-            <Dropdown.Item key={stop.id} onClick={() => setSelectedStop(stop.id)}>
-              {stop.name}
+          {lines.map((line) => (
+            <Dropdown.Item key={line.id} onClick={() => setSelectedLine(line.id)}>
+              {line.name}
             </Dropdown.Item>
           ))}
         </Dropdown.Menu>
       </Dropdown>
-      <div className="comments-list">
-        {comments.map((comment) => (
-          <Card key={comment._id} body outline color="blue" className="mx-1 my-2" bg="danger" style={{ width: "30rem" }}>
-            <Card.Body>
-              <Card.Title>Comment</Card.Title>
-              <Card.Text>{comment.username}</Card.Text>
-              <Card.Text>{comment.text}</Card.Text>
-              <Card.Text>{new Date(comment.time).toLocaleString()}</Card.Text>
-              <Button
-                className="ms-2"
-                variant="danger"
-                size="sm"
-                onClick={() => handleDeleteComment(comment._id)}
-              >
-                Delete
-              </Button>
-            </Card.Body>
-          </Card>
-        ))}
-      </div>
+      {selectedLine && (
+        <div className="comments-list">
+          {comments.map((comment) => (
+            <Card key={comment._id} body outline color="blue" className="mx-1 my-2" bg="danger" style={{ width: "30rem" }}>
+              <Card.Body>
+                <Card.Title>Comment</Card.Title>
+                <Card.Text>{comment.username}</Card.Text>
+                <Card.Text>{comment.text}</Card.Text>
+                <Card.Text>{new Date(comment.time).toLocaleString()}</Card.Text>
+                <Button
+                  className="ms-2"
+                  variant="danger"
+                  size="sm"
+                  onClick={() => handleDeleteComment(comment._id)}
+                >
+                  Delete
+                </Button>
+              </Card.Body>
+            </Card>
+          ))}
+        </div>
+      )}
     </div>
   );
 };
 
 export default CommentsList;
+

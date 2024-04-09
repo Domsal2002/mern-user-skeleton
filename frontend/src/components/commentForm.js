@@ -1,14 +1,32 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import axios from 'axios';
 
-const CommentForm = ({ selectedStop }) => {
+const CommentForm = ({ selectedLine, onSelectLine }) => {
   const [username, setUsername] = useState('');
   const [text, setText] = useState('');
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [lines, setLines] = useState([]);
 
   const usernameRef = useRef(null);
   const textRef = useRef(null);
+
+  useEffect(() => {
+    const fetchLines = async () => {
+      try {
+        const response = await axios.get('https://api-v3.mbta.com/lines');
+        const linesData = response.data.data.map(line => ({
+          id: line.id,
+          name: line.attributes.long_name
+        }));
+        setLines(linesData);
+      } catch (err) {
+        console.error("Error fetching lines:", err);
+      }
+    };
+
+    fetchLines();
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -28,10 +46,10 @@ const CommentForm = ({ selectedStop }) => {
     setIsSubmitting(true);
 
     try {
-      await axios.post('http://localhost:8081/comment/postComment', {
+      await axios.post(`http://localhost:8081/comment/postComment/${selectedLine}`, {
         username,
         text,
-        stopID: selectedStop,  // Include selectedStop
+        lineID: selectedLine,
       });
       alert('Comment submitted successfully');
       setUsername('');
@@ -51,6 +69,19 @@ const CommentForm = ({ selectedStop }) => {
   return (
     <div>
       <h2>Post a Comment</h2>
+      <label htmlFor="selectLine">Select Line:</label>
+      <select
+        id="selectLine"
+        onChange={(e) => onSelectLine(e.target.value)}
+        value={selectedLine}
+      >
+        <option value="">Select a Line</option>
+        {lines.map((line) => (
+          <option key={line.id} value={line.id}>
+            {line.name}
+          </option>
+        ))}
+      </select>
       <form onSubmit={handleSubmit}>
         <div>
           <label htmlFor="username">Username:</label>
@@ -74,7 +105,7 @@ const CommentForm = ({ selectedStop }) => {
           {errors.text && <div className="error">{errors.text}</div>}
         </div>
         <div>
-          <button type="submit" disabled={isSubmitting} onClick={refreshPage}>
+          <button type="submit" disabled={isSubmitting}>
             Submit
           </button>
         </div>

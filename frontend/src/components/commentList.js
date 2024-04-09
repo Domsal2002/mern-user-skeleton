@@ -2,32 +2,11 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Card from 'react-bootstrap/Card';
 import Button from "react-bootstrap/Button";
-import Dropdown from 'react-bootstrap/Dropdown';
 
-const CommentsList = () => {
+const CommentsList = ({ selectedLine }) => {
   const [comments, setComments] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [selectedLine, setSelectedLine] = useState(null);
-  const [lines, setLines] = useState([]);
-
-  useEffect(() => {
-    // Fetch lines from MBTA API
-    const fetchLines = async () => {
-      try {
-        const response = await axios.get('https://api-v3.mbta.com/lines');
-        const linesData = response.data.data.map(line => ({
-          id: line.id,
-          name: line.attributes.long_name
-        }));
-        setLines(linesData);
-      } catch (err) {
-        console.error("Error fetching lines:", err);
-      }
-    };
-
-    fetchLines();
-  }, []);
 
   useEffect(() => {
     // Fetch comments based on selected line
@@ -38,7 +17,7 @@ const CommentsList = () => {
       }
 
       try {
-        const response = await axios.get(`http://localhost:8081/comment/getByLine/${selectedLine}`);
+        const response = await axios.get(`http://localhost:8081/comment/getAll/${selectedLine}`);
         setComments(response.data);
         setIsLoading(false);
       } catch (err) {
@@ -80,18 +59,6 @@ const CommentsList = () => {
   return (
     <div>
       <h2>Comments</h2>
-      <Dropdown>
-        <Dropdown.Toggle variant="primary" id="dropdown-basic">
-          Select Line
-        </Dropdown.Toggle>
-        <Dropdown.Menu>
-          {lines.map((line) => (
-            <Dropdown.Item key={line.id} onClick={() => setSelectedLine(line.id)}>
-              {line.name}
-            </Dropdown.Item>
-          ))}
-        </Dropdown.Menu>
-      </Dropdown>
       {selectedLine && (
         <div className="comments-list">
           {comments.map((comment) => (

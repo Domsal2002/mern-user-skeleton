@@ -13,10 +13,10 @@ const commentSchema = new mongoose.Schema(
       required: true,
       label: "text",
     },
-    stopID: {
+    lineID: {
       type: String,
       required: true,
-      label: "stopID",
+      label: "lineID",
     },
     time: {
       required: true,

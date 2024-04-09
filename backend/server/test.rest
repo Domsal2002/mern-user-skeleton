@@ -69,7 +69,7 @@ Content-Type: application/json
 ##################################################################
 #######################Comment Routes#############################
 
-POST http://localhost:8081/comment/postComment
+POST http://localhost:8081/comment/postComment/Red Line
 Content-Type: application/json
 
 {

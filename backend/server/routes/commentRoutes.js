@@ -3,13 +3,15 @@ const router = express.Router();
 const commentModel = require("../models/commentModel");
 
 // post/create comment route
-router.post('/postComment', async (req, res) => {
-    const { username, text, stopID } = req.body
+router.post('/postComment/:lineID', async (req, res) => {
+    const { username, text, } = req.body
 
+    const { lineID } = req.params
+    
     const createComment = new commentModel({
         username,
         text,
-        stopID
+        lineID
     })
 
     try {
@@ -21,10 +23,18 @@ router.post('/postComment', async (req, res) => {
 })
 
 // get all route
-router.get('/getAll', async (req, res) => {
-    const comment = await commentModel.find();
-    return res.json(comment)
-})
+router.get('/getAll/:lineID', async (req, res) => {
+    const { lineID } = req.params;
+
+    try {
+        const comments = await commentModel.find({ lineID });
+        return res.json(comments);
+    } catch (error) {
+        console.error("Error fetching comments:", error);
+        return res.status(500).json({ message: "Error fetching comments" });
+    }
+});
+
 
 // update comment route
 router.put('/editComment/:id', async (req, res) => {
@@ -70,7 +80,7 @@ router.delete('/deleteComment/:id', async (req, res) => {
 })
 
 // Get comments by stopID
-router.get('/getByStop/:stopID', async (req, res) => {
+router.get('/getByStop/:lineID', async (req, res) => {
     try {
         const stopID = req.params.stopID;
         const comments = await Comment.find({ stopID });

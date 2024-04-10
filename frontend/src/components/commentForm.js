@@ -67,51 +67,61 @@ const CommentForm = ({ selectedLine, onSelectLine }) => {
   };
 
   return (
-    <div>
+    <div className="comment-form-container">
       <h2>Post a Comment</h2>
-      <label htmlFor="selectLine">Select Line:</label>
-      <select
-        id="selectLine"
-        onChange={(e) => onSelectLine(e.target.value)}
-        value={selectedLine}
-      >
-        <option value="">Select a Line</option>
-        {lines.map((line) => (
-          <option key={line.id} value={line.id}>
-            {line.name}
-          </option>
-        ))}
-      </select>
-      <form onSubmit={handleSubmit}>
-        <div>
+      
+      <div className="form-group">
+        <label htmlFor="selectLine">Select Line:</label>
+        <select
+          id="selectLine"
+          className="form-control"
+          onChange={(e) => onSelectLine(e.target.value)}
+          value={selectedLine}
+        >
+          <option value="">Select a Line</option>
+          {lines.map((line) => (
+            <option key={line.id} value={line.id}>
+              {line.name}
+            </option>
+          ))}
+        </select>
+      </div>
+      
+      <form onSubmit={handleSubmit} className="comment-form">
+        <div className="form-group">
           <label htmlFor="username">Username:</label>
           <input
             type="text"
             id="username"
+            className="form-control"
             ref={usernameRef}
             value={username}
             onChange={(e) => setUsername(e.target.value)}
           />
           {errors.username && <div className="error">{errors.username}</div>}
         </div>
-        <div>
+        
+        <div className="form-group">
           <label htmlFor="text">Comment:</label>
           <textarea
             id="text"
+            className="form-control"
             ref={textRef}
             value={text}
             onChange={(e) => setText(e.target.value)}
           ></textarea>
           {errors.text && <div className="error">{errors.text}</div>}
         </div>
-        <div>
-          <button type="submit" disabled={isSubmitting}>
+        
+        <div className="form-group">
+          <button type="submit" className="btn btn-primary" disabled={isSubmitting}>
             Submit
           </button>
         </div>
       </form>
     </div>
   );
+  
 };
 
 export default CommentForm;

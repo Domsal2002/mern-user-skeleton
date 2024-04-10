@@ -57,19 +57,21 @@ const CommentsList = ({ selectedLine }) => {
   }
 
   return (
-    <div>
+    <div className="comments-container">
       <h2>Comments</h2>
+  
       {selectedLine && (
         <div className="comments-list">
           {comments.map((comment) => (
-            <Card key={comment._id} body outline color="blue" className="mx-1 my-2" bg="danger" style={{ width: "30rem" }}>
+            <Card key={comment._id} className="comment-card mx-1 my-2">
               <Card.Body>
-                <Card.Title>Comment</Card.Title>
-                <Card.Text>{comment.username}</Card.Text>
-                <Card.Text>{comment.text}</Card.Text>
-                <Card.Text>{new Date(comment.time).toLocaleString()}</Card.Text>
+                <Card.Title className="comment-title">Comment</Card.Title>
+                <Card.Text className="comment-username">{comment.username}</Card.Text>
+                <Card.Text className="comment-text">{comment.text}</Card.Text>
+                <Card.Text className="comment-time">{new Date(comment.time).toLocaleString()}</Card.Text>
+                
                 <Button
-                  className="ms-2"
+                  className="delete-btn ms-2"
                   variant="danger"
                   size="sm"
                   onClick={() => handleDeleteComment(comment._id)}
@@ -83,6 +85,7 @@ const CommentsList = ({ selectedLine }) => {
       )}
     </div>
   );
+  
 };
 
 export default CommentsList;

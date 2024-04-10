@@ -90,5 +90,16 @@ router.get('/getByStop/:lineID', async (req, res) => {
     }
 });
 
+// Get all comments without filtering by lineID
+router.get('/getAll', async (req, res) => {
+    try {
+        const comments = await commentModel.find({});
+        res.json(comments);
+    } catch (error) {
+        console.error("Error fetching all comments:", error);
+        res.status(500).json({ message: "Error fetching all comments" });
+    }
+});
+
 
 module.exports = router;

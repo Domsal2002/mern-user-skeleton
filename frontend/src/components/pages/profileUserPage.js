@@ -16,16 +16,11 @@ const PrivateUserProfile = () => {
 
   // Function to fetch user profile data
   const fetchUserProfile = async () => {
-    const userInfo = getUserInfo();
-    if (userInfo) {
-      setUsername(userInfo.username);
-    }
-
     try {
-      const response = await fetch(`http://localhost:8081/profile/${userInfo.username}`);
+      const response = await fetch(`http://localhost:8081/profile/${user.username}`);
       const userData = await response.json();
-      setUsername(userData.username);
-      setBio(userData.bio);
+      setUsername(userData.user.username);
+      setBio(userData.user.bio);
     } catch (error) {
       console.error('Error fetching user profile:', error);
     }

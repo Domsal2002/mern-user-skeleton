@@ -74,4 +74,21 @@ router.post('/editProfile', async (req, res) => {
         }
 
     })
+
+    router.get('/:username', async (req, res) => {
+
+        try {
+           const profile = await
+           profileModel.findOne({username: req.params.username});
+           if(!profile) {
+            return res.status(404).send("no stored profile");
+           } else {
+            return res.json(profile)
+           }
+        } catch (error) {
+            console.error(error);
+            return res.status(500).send("Internal Server Error");
+        }
+    }
+);
 module.exports = router;

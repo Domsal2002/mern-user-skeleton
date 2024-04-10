@@ -14,6 +14,7 @@ import { createContext, useState, useEffect } from "react";
 import getUserInfo from "./utilities/decodeJwt";
 import AdminPage from "./components/pages/adminPage";
 import CommentPage from "./components/pages/commentPage";
+import ProfileUserPage from "./components/pages/profileUserPage";
 
 
 export const UserContext = createContext();
@@ -39,6 +40,7 @@ const App = () => {
           <Route path="/privateUserProfile" element={<PrivateUserProfile />} />
           <Route path="/admin" element={<AdminPage />} />
           <Route path="/commentPage" element={<CommentPage />} />
+          <Route path="/profileUserPage" element={<ProfileUserPage />} />
         </Routes>
       </UserContext.Provider>
     </>

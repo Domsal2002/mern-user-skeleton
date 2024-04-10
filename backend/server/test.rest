@@ -111,8 +111,8 @@ POST http://localhost:8081/profile/editProfile
 Content-Type: application/json
 
 {
-    "username" : "msaintcyr", 
-    "password" : "mac1234"
+    "username" : "msaintcyr",
+    "bio" : "My Hometown is Medford, Massachusetts"
 }
 
 #Delete Profile
@@ -135,3 +135,7 @@ Content-Type: application/json
     "password" : "testi12345",
     "bio" : "I am from Medford"
 }
+
+###
+GET http://localhost:8081/profile/admintest
+Content-Type: application/json

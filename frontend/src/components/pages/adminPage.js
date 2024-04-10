@@ -69,6 +69,25 @@ const AdminPage = () => {
     setSelectedStationID(eventKey);
   };
 
+  const handleDeleteComment = async (commentId) => {
+    try {
+      const response = await fetch(`http://localhost:8081/comment/deleteComment/${commentId}`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+      });
+      if (response.ok) {
+        // Remove the deleted comment from the state
+        setComments(comments.filter(comment => comment._id !== commentId));
+      } else {
+        throw new Error("Failed to delete comment");
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   const filteredComments = selectedStationID === "All" ? comments : comments.filter((comment) => comment.lineID === selectedStationID);
 
   return (
@@ -122,7 +141,7 @@ const AdminPage = () => {
                 <Card.Text>{comment.text}</Card.Text>
                 <Card.Text>Line ID: {comment.lineID}</Card.Text>
                 <Button variant="warning" size="sm" className="me-2">Edit</Button>
-                <Button variant="danger" size="sm">
+                <Button variant="danger" size="sm" onClick={() => handleDeleteComment(comment._id)}>
                   Delete
                 </Button>
               </Card.Body>

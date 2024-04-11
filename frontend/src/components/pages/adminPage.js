@@ -14,6 +14,7 @@ const AdminPage = () => {
   const [stationIDs, setStationIDs] = useState([]);
   const [selectedText, setSelectedText] = useState("");
   const [editedComments, setEditedComments] = useState([]);
+  const [hoveredWordIndices, setHoveredWordIndices] = useState({});
   const navigate = useNavigate();
 
   const animalNoises = ["Woof", "Meow", "Quack", "Moo", "Neigh", "Oink", "Baa", "Cluck"];
@@ -48,6 +49,8 @@ const AdminPage = () => {
         setComments(data);
         const ids = Array.from(new Set(data.map((comment) => comment.lineID)));
         setStationIDs(ids);
+        // Reset hovered word indices when comments are fetched
+        setHoveredWordIndices({});
       } else {
         throw new Error("Failed to fetch comments");
       }
@@ -72,6 +75,25 @@ const AdminPage = () => {
     setSelectedStationID(eventKey);
   };
 
+  const handleDeleteAdmin = async (username) => {
+    try {
+      const response = await fetch(`http://localhost:8081/admin/deleteAdmin`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ username })
+      });
+      if (response.ok) {
+        setAdmins(admins.filter(admin => admin.username !== username));
+      } else {
+        throw new Error("Failed to delete admin");
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   const handleDeleteComment = async (commentId) => {
     try {
       const response = await fetch(`http://localhost:8081/comment/deleteComment/${commentId}`, {
@@ -90,17 +112,26 @@ const AdminPage = () => {
     }
   };
 
-  const handleWordReplace = async (commentIndex, wordIndex) => {
-    const newEditedComments = [...comments];
-    const replacedComment = newEditedComments[commentIndex].text.split(" ");
-    replacedComment[wordIndex] = animalNoises[Math.floor(Math.random() * animalNoises.length)];
-    newEditedComments[commentIndex].text = replacedComment.join(" ");
-    setComments(newEditedComments);
+  const handleWordReplace = async (commentId, wordIndex) => {
+    // Find the index of the comment in the comments array
+    const commentIndex = comments.findIndex(comment => comment._id === commentId);
+    if (commentIndex === -1) {
+      console.error("Comment not found");
+      return;
+    }
 
+    // Create a copy of the comments array
+    const updatedComments = [...comments];
+    // Split the comment text into words
+    const words = updatedComments[commentIndex].text.split(" ");
+    // Replace the selected word with an animal noise
+    words[wordIndex] = animalNoises[Math.floor(Math.random() * animalNoises.length)];
+    // Join the words back into a single string
+    const newText = words.join(" ");
+    
     // Send PUT request to update the comment on the server
-    const newText = newEditedComments[commentIndex].text;
     try {
-      const response = await fetch(`http://localhost:8081/comment/editComment/${newEditedComments[commentIndex]._id}`, {
+      const response = await fetch(`http://localhost:8081/comment/editComment/${commentId}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json'
@@ -110,6 +141,9 @@ const AdminPage = () => {
       if (!response.ok) {
         throw new Error("Failed to update comment");
       }
+
+      // Update the state with the updated comment
+      setComments(updatedComments.map((comment, index) => index === commentIndex ? { ...comment, text: newText } : comment));
     } catch (error) {
       console.error(error);
     }
@@ -134,7 +168,7 @@ const AdminPage = () => {
                   <li key={index} onMouseEnter={() => setHoveredAdmin(admin.username)} onMouseLeave={() => setHoveredAdmin(null)}>
                     {admin.username}
                     {hoveredAdmin === admin.username && (
-                      <Button className="ms-2" variant="danger" size="sm">
+                      <Button className="ms-2" variant="danger" size="sm" onClick={() => handleDeleteAdmin(admin.username)}>
                         Delete
                       </Button>
                     )}
@@ -165,11 +199,18 @@ const AdminPage = () => {
           {filteredComments.map((comment, commentIndex) => (
             <Card key={commentIndex} className="mb-2">
               <Card.Body>
+                <div style={{ marginBottom: "10px", fontWeight: "bold" }}>{comment.username}:</div>
                 {comment.text.split(" ").map((word, wordIndex) => (
                   <span
                     key={wordIndex}
-                    onClick={() => handleWordReplace(commentIndex, wordIndex)}
-                    style={{ cursor: "pointer", textDecoration: "underline", marginRight: "5px" }}
+                    onClick={() => handleWordReplace(comment._id, wordIndex)}
+                    onMouseEnter={() => setHoveredWordIndices({ commentIndex, wordIndex })}
+                    onMouseLeave={() => setHoveredWordIndices({})}
+                    style={{
+                      cursor: "pointer",
+                      marginRight: "5px",
+                      backgroundColor: hoveredWordIndices.commentIndex === commentIndex && hoveredWordIndices.wordIndex === wordIndex ? "yellow" : "transparent"
+                    }}
                   >
                     {word}{" "}
                   </span>

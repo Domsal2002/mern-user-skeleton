@@ -12,7 +12,11 @@ const AdminPage = () => {
   const [showComments, setShowComments] = useState(false);
   const [selectedStationID, setSelectedStationID] = useState("All");
   const [stationIDs, setStationIDs] = useState([]);
+  const [selectedText, setSelectedText] = useState("");
+  const [editedComments, setEditedComments] = useState([]);
   const navigate = useNavigate();
+
+  const animalNoises = ["Woof", "Meow", "Quack", "Moo", "Neigh", "Oink", "Baa", "Cluck"];
 
   useEffect(() => {
     const fetchAdmins = async () => {
@@ -42,7 +46,6 @@ const AdminPage = () => {
       if (response.ok) {
         const data = await response.json();
         setComments(data);
-        // Extract unique station IDs
         const ids = Array.from(new Set(data.map((comment) => comment.lineID)));
         setStationIDs(ids);
       } else {
@@ -78,10 +81,34 @@ const AdminPage = () => {
         },
       });
       if (response.ok) {
-        // Remove the deleted comment from the state
         setComments(comments.filter(comment => comment._id !== commentId));
       } else {
         throw new Error("Failed to delete comment");
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const handleWordReplace = async (commentIndex, wordIndex) => {
+    const newEditedComments = [...comments];
+    const replacedComment = newEditedComments[commentIndex].text.split(" ");
+    replacedComment[wordIndex] = animalNoises[Math.floor(Math.random() * animalNoises.length)];
+    newEditedComments[commentIndex].text = replacedComment.join(" ");
+    setComments(newEditedComments);
+
+    // Send PUT request to update the comment on the server
+    const newText = newEditedComments[commentIndex].text;
+    try {
+      const response = await fetch(`http://localhost:8081/comment/editComment/${newEditedComments[commentIndex]._id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ text: newText })
+      });
+      if (!response.ok) {
+        throw new Error("Failed to update comment");
       }
     } catch (error) {
       console.error(error);
@@ -135,12 +162,18 @@ const AdminPage = () => {
               ))}
             </Dropdown.Menu>
           </Dropdown>
-          {filteredComments.map((comment, index) => (
-            <Card key={index} className="mb-2">
+          {filteredComments.map((comment, commentIndex) => (
+            <Card key={commentIndex} className="mb-2">
               <Card.Body>
-                <Card.Text>{comment.text}</Card.Text>
-                <Card.Text>Line ID: {comment.lineID}</Card.Text>
-                <Button variant="warning" size="sm" className="me-2">Edit</Button>
+                {comment.text.split(" ").map((word, wordIndex) => (
+                  <span
+                    key={wordIndex}
+                    onClick={() => handleWordReplace(commentIndex, wordIndex)}
+                    style={{ cursor: "pointer", textDecoration: "underline", marginRight: "5px" }}
+                  >
+                    {word}{" "}
+                  </span>
+                ))}
                 <Button variant="danger" size="sm" onClick={() => handleDeleteComment(comment._id)}>
                   Delete
                 </Button>
@@ -154,4 +187,3 @@ const AdminPage = () => {
 };
 
 export default AdminPage;
-

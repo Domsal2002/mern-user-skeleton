@@ -22,7 +22,7 @@ const AdminPage = () => {
   useEffect(() => {
     const fetchAdmins = async () => {
       try {
-        const response = await fetch("http://localhost:8081/admin/getAllAdmins");
+        const response = await fetch(`${process.env.REACT_APP_BACKEND_SERVER_URI}/admin/getAllAdmins`);
         if (response.ok) {
           const data = await response.json();
           setAdmins(data);
@@ -38,7 +38,7 @@ const AdminPage = () => {
 
   const fetchComments = async () => {
     try {
-      const response = await fetch("http://localhost:8081/comment/getAll", {
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_SERVER_URI}/comment/getAll`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -77,7 +77,7 @@ const AdminPage = () => {
 
   const handleDeleteAdmin = async (username) => {
     try {
-      const response = await fetch(`http://localhost:8081/admin/deleteAdmin`, {
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_SERVER_URI}/admin/deleteAdmin`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json'
@@ -96,7 +96,7 @@ const AdminPage = () => {
 
   const handleDeleteComment = async (commentId) => {
     try {
-      const response = await fetch(`http://localhost:8081/comment/deleteComment/${commentId}`, {
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_SERVER_URI}/comment/deleteComment/${commentId}`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json'
@@ -131,7 +131,7 @@ const AdminPage = () => {
     
     // Send PUT request to update the comment on the server
     try {
-      const response = await fetch(`http://localhost:8081/comment/editComment/${commentId}`, {
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_SERVER_URI}/comment/editComment/${commentId}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json'

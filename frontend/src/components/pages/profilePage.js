@@ -9,7 +9,7 @@ function ProfilePage() {
   useEffect(() => {
     async function fetchData() {
       const result = await axios(
-        'http://localhost:8081/profile/getAll',
+        `${process.env.REACT_APP_BACKEND_SERVER_URI}/profile/getAll`,
       );
       setProfiles(result.data);
     }

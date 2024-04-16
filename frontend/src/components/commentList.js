@@ -17,7 +17,7 @@ const CommentsList = ({ selectedLine }) => {
       }
 
       try {
-        const response = await axios.get(`http://localhost:8081/comment/getAll/${selectedLine}`);
+        const response = await axios.get(`${process.env.REACT_APP_BACKEND_SERVER_URI}/comment/getAll/${selectedLine}`);
         setComments(response.data);
         setIsLoading(false);
       } catch (err) {
@@ -31,7 +31,7 @@ const CommentsList = ({ selectedLine }) => {
 
   const handleDeleteComment = async (_id) => {
     try {
-      const response = await fetch(`http://localhost:8081/comment/deleteComment/${_id}`, {
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_SERVER_URI}/comment/deleteComment/${_id}`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",

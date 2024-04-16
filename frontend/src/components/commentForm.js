@@ -46,7 +46,7 @@ const CommentForm = ({ selectedLine, onSelectLine }) => {
     setIsSubmitting(true);
 
     try {
-      await axios.post(`http://localhost:8081/comment/postComment/${selectedLine}`, {
+      await axios.post(`${process.env.REACT_APP_BACKEND_SERVER_URI}/comment/postComment/${selectedLine}`, {
         username,
         text,
         lineID: selectedLine,

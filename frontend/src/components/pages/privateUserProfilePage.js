@@ -22,7 +22,7 @@ const PrivateUserProfile = () => {
     }
 
     try {
-      const response = await fetch(`http://localhost:8081/profile/${userInfo.username}`);
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_SERVER_URI}/profile/${userInfo.username}`);
       const userData = await response.json();
       setUsername(userData.username);
       setBio(userData.bio);
@@ -41,7 +41,7 @@ const PrivateUserProfile = () => {
 
   const handleUpdateProfile = async () => {
     try {
-      const response = await fetch("http://localhost:8081/profile/editProfile", {
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_SERVER_URI}/profile/editProfile`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json"

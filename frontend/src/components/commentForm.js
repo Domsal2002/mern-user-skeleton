@@ -1,14 +1,13 @@
 import React, { useState, useRef, useEffect } from 'react';
 import axios from 'axios';
+import getUserInfo from '../utilities/decodeJwt';
 
 const CommentForm = ({ selectedLine, onSelectLine }) => {
-  const [username, setUsername] = useState('');
   const [text, setText] = useState('');
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [lines, setLines] = useState([]);
 
-  const usernameRef = useRef(null);
   const textRef = useRef(null);
 
   useEffect(() => {
@@ -31,12 +30,6 @@ const CommentForm = ({ selectedLine, onSelectLine }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!username) {
-      setErrors({ username: 'Username is required' });
-      usernameRef.current.focus();
-      return;
-    }
-
     if (!text) {
       setErrors({ text: 'Comment is required' });
       textRef.current.focus();
@@ -46,13 +39,16 @@ const CommentForm = ({ selectedLine, onSelectLine }) => {
     setIsSubmitting(true);
 
     try {
+      const userInfo = getUserInfo();
+      const username = userInfo.username;
+
       await axios.post(`${process.env.REACT_APP_BACKEND_SERVER_URI}/comment/postComment/${selectedLine}`, {
         username,
         text,
         lineID: selectedLine,
       });
+
       alert('Comment submitted successfully');
-      setUsername('');
       setText('');
       setErrors({});
     } catch (error) {
@@ -62,14 +58,10 @@ const CommentForm = ({ selectedLine, onSelectLine }) => {
     }
   };
 
-  function refreshPage() {
-    window.location.reload();
-  };
-
   return (
     <div className="comment-form-container">
       <h2>Post a Comment</h2>
-      
+
       <div className="form-group">
         <label htmlFor="selectLine">Select Line:</label>
         <select
@@ -86,21 +78,8 @@ const CommentForm = ({ selectedLine, onSelectLine }) => {
           ))}
         </select>
       </div>
-      
+
       <form onSubmit={handleSubmit} className="comment-form">
-        <div className="form-group">
-          <label htmlFor="username">Username:</label>
-          <input
-            type="text"
-            id="username"
-            className="form-control"
-            ref={usernameRef}
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-          />
-          {errors.username && <div className="error">{errors.username}</div>}
-        </div>
-        
         <div className="form-group">
           <label htmlFor="text">Comment:</label>
           <textarea
@@ -112,7 +91,7 @@ const CommentForm = ({ selectedLine, onSelectLine }) => {
           ></textarea>
           {errors.text && <div className="error">{errors.text}</div>}
         </div>
-        
+
         <div className="form-group">
           <button type="submit" className="btn btn-primary" disabled={isSubmitting}>
             Submit
@@ -121,8 +100,8 @@ const CommentForm = ({ selectedLine, onSelectLine }) => {
       </form>
     </div>
   );
-  
 };
 
 export default CommentForm;
+
 

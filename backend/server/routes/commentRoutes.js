@@ -4,23 +4,27 @@ const commentModel = require("../models/commentModel");
 
 // post/create comment route
 router.post('/postComment/:lineID', async (req, res) => {
-    const { username, text, } = req.body
+    const { username, text } = req.body;
+    const { lineID } = req.params;
 
-    const { lineID } = req.params
-    
     const createComment = new commentModel({
         username,
         text,
         lineID
-    })
+    });
 
     try {
-        const saveComment = await createComment.save()
+        const saveComment = await createComment.save();
         res.send(saveComment);
     } catch (error) {
         res.status(400).send({ message: "Error trying to create a new comment" });
     }
-})
+});
+
+
+module.exports = router;
+
+
 
 // get all route
 router.get('/getAll/:lineID', async (req, res) => {

@@ -59,41 +59,40 @@ const CommentForm = ({ selectedLine, onSelectLine }) => {
   };
 
   return (
-    <div className="comment-form-container">
+    <div style={styles.container}>
       <h2>Post a Comment</h2>
+      <form onSubmit={handleSubmit}>
+        <div style={styles.formGroup}>
+          <label htmlFor="selectLine">Select Line:</label>
+          <select
+            id="selectLine"
+            style={styles.formControl}
+            onChange={(e) => onSelectLine(e.target.value)}
+            value={selectedLine}
+          >
+            <option value="">Select a Line</option>
+            {lines.map((line) => (
+              <option key={line.id} value={line.id}>
+                {line.name}
+              </option>
+            ))}
+          </select>
+        </div>
 
-      <div className="form-group">
-        <label htmlFor="selectLine">Select Line:</label>
-        <select
-          id="selectLine"
-          className="form-control"
-          onChange={(e) => onSelectLine(e.target.value)}
-          value={selectedLine}
-        >
-          <option value="">Select a Line</option>
-          {lines.map((line) => (
-            <option key={line.id} value={line.id}>
-              {line.name}
-            </option>
-          ))}
-        </select>
-      </div>
-
-      <form onSubmit={handleSubmit} className="comment-form">
-        <div className="form-group">
+        <div style={styles.formGroup}>
           <label htmlFor="text">Comment:</label>
           <textarea
             id="text"
-            className="form-control"
+            style={styles.formControl}
             ref={textRef}
             value={text}
             onChange={(e) => setText(e.target.value)}
           ></textarea>
-          {errors.text && <div className="error">{errors.text}</div>}
+          {errors.text && <div style={styles.error}>{errors.text}</div>}
         </div>
 
-        <div className="form-group">
-          <button type="submit" className="btn btn-primary" disabled={isSubmitting}>
+        <div style={styles.formGroup}>
+          <button type="submit" style={styles.button} disabled={isSubmitting}>
             Submit
           </button>
         </div>
@@ -102,6 +101,41 @@ const CommentForm = ({ selectedLine, onSelectLine }) => {
   );
 };
 
+const styles = {
+  container: {
+    maxWidth: '600px',
+    margin: '20px 0',
+    padding: '20px',
+    background: '#f8f9fa',
+    borderRadius: '8px',
+    boxShadow: '0 4px 8px rgba(0,0,0,0.1)',
+    fontFamily: 'Arial, sans-serif',
+    float: 'left'  // Align the container to the left
+  },
+  formGroup: {
+    marginBottom: '15px'
+  },
+  formControl: {
+    width: '100%',
+    padding: '8px 10px',
+    border: '1px solid #ccc',
+    borderRadius: '4px',
+    fontSize: '16px',
+    boxSizing: 'border-box'
+  },
+  button: {
+    width: '100%',
+    padding: '10px',
+    border: 'none',
+    backgroundColor: '#007bff',
+    color: 'white',
+    borderRadius: '4px',
+    cursor: 'pointer'
+  },
+  error: {
+    color: 'red',
+    fontSize: '14px'
+  }
+};
+
 export default CommentForm;
-
-

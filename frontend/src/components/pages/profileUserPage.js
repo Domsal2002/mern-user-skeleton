@@ -16,6 +16,10 @@ const PrivateUserProfile = () => {
 
   // Function to fetch user profile data
   const fetchUserProfile = async () => {
+    const userInfo = getUserInfo();
+    if (userInfo) {
+      setUsername(userInfo.username);
+    }
     try {
       const response = await fetch(`${process.env.REACT_APP_BACKEND_SERVER_URI}/profile/${user.username}`);
       const userData = await response.json();

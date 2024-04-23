@@ -2,18 +2,21 @@ import React, { useState, useRef, useEffect } from 'react';
 import axios from 'axios';
 import getUserInfo from '../utilities/decodeJwt';
 
-const CommentForm = ({ selectedLine, onSelectLine }) => {
+const CommentForm = ({ onSelectLine, onSelectStation }) => {
   const [text, setText] = useState('');
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [lines, setLines] = useState([]);
+  const [stations, setStations] = useState([]);
+  const [selectedLine, setSelectedLine] = useState('');
+  const [selectedStation, setSelectedStation] = useState('');
 
   const textRef = useRef(null);
 
   useEffect(() => {
     const fetchLines = async () => {
       try {
-        const response = await axios.get('https://api-v3.mbta.com/lines');
+        const response = await axios.get('https://api-v3.mbta.com/routes?filter[type]=0,1');
         const linesData = response.data.data.map(line => ({
           id: line.id,
           name: line.attributes.long_name
@@ -26,6 +29,27 @@ const CommentForm = ({ selectedLine, onSelectLine }) => {
 
     fetchLines();
   }, []);
+
+  useEffect(() => {
+    if (selectedLine) {
+      const fetchStations = async () => {
+        try {
+          const response = await axios.get(`https://api-v3.mbta.com/stops?filter[route]=${selectedLine}`);
+          const stationsData = response.data.data.map(station => ({
+            id: station.id,
+            name: station.attributes.name
+          }));
+          setStations(stationsData);
+        } catch (err) {
+          console.error("Error fetching stations:", err);
+        }
+      };
+
+      fetchStations();
+    } else {
+      setStations([]); // Clear stations when line is not selected
+    }
+  }, [selectedLine]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -46,12 +70,14 @@ const CommentForm = ({ selectedLine, onSelectLine }) => {
         username,
         text,
         lineID: selectedLine,
+        stationID: selectedStation,
       });
 
       alert('Comment submitted successfully');
       setText('');
       setErrors({});
     } catch (error) {
+      console.error('Error submitting comment:', error);
       alert('Error submitting comment');
     } finally {
       setIsSubmitting(false);
@@ -67,7 +93,11 @@ const CommentForm = ({ selectedLine, onSelectLine }) => {
           <select
             id="selectLine"
             style={styles.formControl}
-            onChange={(e) => onSelectLine(e.target.value)}
+            onChange={(e) => {
+              onSelectLine(e.target.value);
+              setSelectedLine(e.target.value);
+              setSelectedStation('');
+            }}
             value={selectedLine}
           >
             <option value="">Select a Line</option>
@@ -78,6 +108,28 @@ const CommentForm = ({ selectedLine, onSelectLine }) => {
             ))}
           </select>
         </div>
+
+        {selectedLine && (
+          <div style={styles.formGroup}>
+            <label htmlFor="selectStation">Select Station:</label>
+            <select
+              id="selectStation"
+              style={styles.formControl}
+              onChange={(e) => {
+                onSelectStation(e.target.value);
+                setSelectedStation(e.target.value);
+              }}
+              value={selectedStation}
+            >
+              <option value="">Select a Station</option>
+              {stations.map((station) => (
+                <option key={station.id} value={station.id}>
+                  {station.name}
+                </option>
+              ))}
+            </select>
+          </div>
+        )}
 
         <div style={styles.formGroup}>
           <label htmlFor="text">Comment:</label>
@@ -104,13 +156,12 @@ const CommentForm = ({ selectedLine, onSelectLine }) => {
 const styles = {
   container: {
     maxWidth: '600px',
-    margin: '20px 0',
+    margin: '20px auto',
     padding: '20px',
     background: '#f8f9fa',
     borderRadius: '8px',
     boxShadow: '0 4px 8px rgba(0,0,0,0.1)',
-    fontFamily: 'Arial, sans-serif',
-    float: 'left'  // Align the container to the left
+    fontFamily: 'Arial, sans-serif'
   },
   formGroup: {
     marginBottom: '15px'

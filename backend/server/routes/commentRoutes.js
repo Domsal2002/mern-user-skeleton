@@ -2,15 +2,16 @@ const express = require("express");
 const router = express.Router();
 const commentModel = require("../models/commentModel");
 
-// post/create comment route
+// POST/create comment route
 router.post('/postComment/:lineID', async (req, res) => {
-    const { username, text } = req.body;
+    const { username, text, stationID } = req.body;  // Include stationID from the request body
     const { lineID } = req.params;
 
     const createComment = new commentModel({
         username,
         text,
-        lineID
+        lineID,
+        stationID  // Save stationID in the database, can be undefined if not provided
     });
 
     try {
@@ -21,17 +22,15 @@ router.post('/postComment/:lineID', async (req, res) => {
     }
 });
 
+// GET all route by line and optionally by station
+router.get('/getAll/:lineID/:stationID?', async (req, res) => {
+    const { lineID, stationID } = req.params;
 
-module.exports = router;
-
-
-
-// get all route
-router.get('/getAll/:lineID', async (req, res) => {
-    const { lineID } = req.params;
+    let query = { lineID };
+    if (stationID) query.stationID = stationID;  // Include stationID in the query if provided
 
     try {
-        const comments = await commentModel.find({ lineID });
+        const comments = await commentModel.find(query);
         return res.json(comments);
     } catch (error) {
         console.error("Error fetching comments:", error);
@@ -39,8 +38,18 @@ router.get('/getAll/:lineID', async (req, res) => {
     }
 });
 
+// GET all comments without any filters
+router.get('/getAll', async (req, res) => {
+    try {
+        const comments = await commentModel.find({});
+        res.json(comments);
+    } catch (error) {
+        console.error("Error fetching all comments:", error);
+        res.status(500).json({ message: "Error fetching all comments" });
+    }
+});
 
-// update comment route
+// PUT/update comment route
 router.put('/editComment/:id', async (req, res) => {
     try {
         const commentId = req.params.id;
@@ -62,9 +71,9 @@ router.put('/editComment/:id', async (req, res) => {
         console.error(error);
         res.status(500).json({ error: "Internal server error" });
     }
-})
+});
 
-// delete comment route
+// DELETE comment route
 router.delete('/deleteComment/:id', async (req, res) => {
     try {
         const commentId = req.params.id;
@@ -81,29 +90,6 @@ router.delete('/deleteComment/:id', async (req, res) => {
         console.error(error);
         res.status(500).json({ error: "Internal server error" });
     }
-})
-
-// Get comments by stopID
-router.get('/getByStop/:lineID', async (req, res) => {
-    try {
-        const stopID = req.params.stopID;
-        const comments = await Comment.find({ stopID });
-        res.json(comments);
-    } catch (error) {
-        res.status(500).json({ message: 'Error fetching comments', error });
-    }
 });
-
-// Get all comments without filtering by lineID
-router.get('/getAll', async (req, res) => {
-    try {
-        const comments = await commentModel.find({});
-        res.json(comments);
-    } catch (error) {
-        console.error("Error fetching all comments:", error);
-        res.status(500).json({ message: "Error fetching all comments" });
-    }
-});
-
 
 module.exports = router;

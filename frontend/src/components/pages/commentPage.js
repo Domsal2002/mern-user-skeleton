@@ -6,19 +6,17 @@ import 'leaflet/dist/leaflet.css';
 
 const CommentPage = () => {
   const [selectedLine, setSelectedLine] = useState(null);
-  const [selectedStation, setSelectedStation] = useState(null);  // New state for the selected station
+  const [selectedStation, setSelectedStation] = useState(null);
   const [lines, setLines] = useState([]);
   const [stops, setStops] = useState([]);
 
-  // Fetch all lines on component mount
   useEffect(() => {
-    fetch('https://api-v3.mbta.com/routes?filter[type]=0,1') // Adjust types for subway lines, etc.
+    fetch('https://api-v3.mbta.com/routes?filter[type]=0,1')
       .then(response => response.json())
       .then(data => setLines(data.data))
       .catch(error => console.error('Error fetching lines:', error));
   }, []);
 
-  // Fetch stops when a line is selected
   useEffect(() => {
     if (selectedLine) {
       fetch(`https://api-v3.mbta.com/stops?filter[route]=${selectedLine}`)
@@ -26,9 +24,18 @@ const CommentPage = () => {
         .then(data => setStops(data.data))
         .catch(error => console.error('Error fetching stops:', error));
     } else {
-      setStops([]);  // Clear stops if no line is selected
+      setStops([]);
     }
   }, [selectedLine]);
+
+  const onSelectLine = (lineId) => {
+    setSelectedLine(lineId);
+    setSelectedStation(null); // Reset station when line changes
+  };
+
+  const onSelectStation = (stationId) => {
+    setSelectedStation(stationId);
+  };
 
   return (
     <div style={styles.pageContainer}>
@@ -36,17 +43,22 @@ const CommentPage = () => {
       <div style={styles.contentContainer}>
         <div style={styles.formContainer}>
           <CommentForm
-            selectedLine={selectedLine}
-            onSelectLine={setSelectedLine}
-            onSelectStation={setSelectedStation}  // Passing down the handler
+            onSelectLine={onSelectLine}
+            onSelectStation={onSelectStation}
             lines={lines}
             stops={stops}
-            selectedStation={selectedStation}  // Pass selectedStation to the form
+            selectedLine={selectedLine}
+            selectedStation={selectedStation}
           />
           {selectedLine && <CommentsList selectedLine={selectedLine} />}
         </div>
         <div style={styles.mapContainer}>
-          <MBTAMap />
+          <MBTAMap
+            selectedLine={selectedLine}
+            selectedStation={selectedStation}
+            lines={lines}
+            stops={stops}
+          />
         </div>
       </div>
     </div>

@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef } from 'react';
 import axios from 'axios';
 import getUserInfo from '../utilities/decodeJwt';
 
@@ -46,7 +46,6 @@ const CommentForm = ({
 
   return (
     <div style={styles.container}>
-      <h2>Post a Comment</h2>
       <form onSubmit={handleSubmit}>
         <div style={styles.formGroup}>
           <label htmlFor="selectLine">Select Line:</label>
@@ -63,40 +62,42 @@ const CommentForm = ({
           </select>
         </div>
 
-        {selectedLine && stops && (
-          <div style={styles.formGroup}>
-            <label htmlFor="selectStation">Select Station:</label>
-            <select
-              id="selectStation"
-              style={styles.formControl}
-              onChange={(e) => onSelectStation(e.target.value)}
-              value={selectedStation}
-            >
-              <option value="">Select a Station</option>
-              {stops.map((station) => (
-                <option key={station.id} value={station.id}>{station.attributes.name}</option>
-              ))}
-            </select>
-          </div>
+        {selectedLine && (
+          <>
+            <div style={styles.formGroup}>
+              <label htmlFor="selectStation">Select Station:</label>
+              <select
+                id="selectStation"
+                style={styles.formControl}
+                onChange={(e) => onSelectStation(e.target.value)}
+                value={selectedStation}
+              >
+                <option value="">Select a Station</option>
+                {stops.map((station) => (
+                  <option key={station.id} value={station.id}>{station.attributes.name}</option>
+                ))}
+              </select>
+            </div>
+
+            <div style={styles.formGroup}>
+              <label htmlFor="text">Comment:</label>
+              <textarea
+                id="text"
+                style={styles.formControl}
+                ref={textRef}
+                value={text}
+                onChange={(e) => setText(e.target.value)}
+              ></textarea>
+              {errors.text && <div style={styles.error}>{errors.text}</div>}
+            </div>
+
+            <div style={styles.formGroup}>
+              <button type="submit" style={styles.button} disabled={isSubmitting}>
+                Submit
+              </button>
+            </div>
+          </>
         )}
-
-        <div style={styles.formGroup}>
-          <label htmlFor="text">Comment:</label>
-          <textarea
-            id="text"
-            style={styles.formControl}
-            ref={textRef}
-            value={text}
-            onChange={(e) => setText(e.target.value)}
-          ></textarea>
-          {errors.text && <div style={styles.error}>{errors.text}</div>}
-        </div>
-
-        <div style={styles.formGroup}>
-          <button type="submit" style={styles.button} disabled={isSubmitting}>
-            Submit
-          </button>
-        </div>
       </form>
     </div>
   );

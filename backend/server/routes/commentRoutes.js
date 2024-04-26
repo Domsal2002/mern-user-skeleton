@@ -26,9 +26,10 @@ router.post('/postComment/:lineID', async (req, res) => {
 router.get('/getAll/:lineID/:stationID?', async (req, res) => {
     const { lineID, stationID } = req.params;
 
-    let query = { lineID };
-    if (stationID) query.stationID = stationID;  // Include stationID in the query if provided
-
+    let query = { lineID: lineID };
+    if (stationID) {
+        query.stationID = stationID;  // Include stationID in the query if provided
+    }
     try {
         const comments = await commentModel.find(query);
         return res.json(comments);

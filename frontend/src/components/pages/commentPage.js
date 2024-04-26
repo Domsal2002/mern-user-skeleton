@@ -41,7 +41,7 @@ const CommentPage = () => {
     <div style={styles.pageContainer}>
       <h1 style={styles.header}>Comment Page</h1>
       <div style={styles.contentContainer}>
-        <div style={styles.formContainer}>
+        <div style={styles.leftContainer}>
           <CommentForm
             onSelectLine={onSelectLine}
             onSelectStation={onSelectStation}
@@ -50,7 +50,10 @@ const CommentPage = () => {
             selectedLine={selectedLine}
             selectedStation={selectedStation}
           />
-          {selectedLine && <CommentsList selectedLine={selectedLine} />}
+          <CommentsList
+            selectedLine={selectedLine}
+            selectedStation={selectedStation}
+          />
         </div>
         <div style={styles.mapContainer}>
           <MBTAMap
@@ -58,8 +61,7 @@ const CommentPage = () => {
             selectedStation={selectedStation}
             lines={lines}
             stops={stops}
-            onSelectStation={onSelectStation} // Pass onSelectStation to MBTAMap
-
+            onSelectStation={onSelectStation}
           />
         </div>
       </div>
@@ -86,13 +88,16 @@ const styles = {
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
-  formContainer: {
-    flex: 1,
+  leftContainer: {
+    flex: 1.5, // Adjust flex as needed
     marginRight: '20px',
   },
   mapContainer: {
-    flex: 1,
-    height: '600px',
+    flex: 2,  // Adjust the flex proportion to make the map bigger relative to the left container
+    width: '60vw', // Uses 60% of the viewport width
+    height: '80vh', // Uses 80% of the viewport height
+    minWidth: '300px', // Ensures the map has a minimum readable size
+    minHeight: '400px' // Ensures the map has a minimum readable size
   }
 };
 

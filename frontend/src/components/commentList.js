@@ -4,7 +4,7 @@ import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
 import getUserInfo from '../utilities/decodeJwt';
 
-const CommentsList = ({ selectedLine }) => {
+const CommentsList = ({ selectedLine, selectedStation }) => {
   const [comments, setComments] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -12,23 +12,34 @@ const CommentsList = ({ selectedLine }) => {
 
   useEffect(() => {
     const fetchComments = async () => {
+
+      setIsLoading(true);   // Indicate loading of new data
+      setComments([]);      // Clear existing comments to prevent showing stale data
+
       if (!selectedLine) {
+        setComments([]);  // Clear comments if no line is selected
         setIsLoading(false);
         return;
       }
 
+      let url = `${process.env.REACT_APP_BACKEND_SERVER_URI}/comment/getAll/${selectedLine}`;
+      if (selectedStation) {
+        url += `/${selectedStation}`;
+      }
+
       try {
-        const response = await axios.get(`${process.env.REACT_APP_BACKEND_SERVER_URI}/comment/getAll/${selectedLine}`);
+        const response = await axios.get(url);
         setComments(response.data);
         setIsLoading(false);
       } catch (err) {
+        console.error('Error fetching comments:', err);
         setError(err);
         setIsLoading(false);
       }
     };
 
     fetchComments();
-  }, [selectedLine]);
+  }, [selectedLine, selectedStation]); // React to changes in both selectedLine and selectedStation
 
   const handleDeleteComment = async (_id) => {
     try {

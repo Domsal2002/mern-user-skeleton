@@ -5,8 +5,8 @@ import MBTAMap from './MBTAMap';
 import 'leaflet/dist/leaflet.css';
 
 const CommentPage = () => {
-  const [selectedLine, setSelectedLine] = useState(null);
-  const [selectedStation, setSelectedStation] = useState(null);
+  const [selectedLine, setSelectedLine] = useState('');
+  const [selectedStation, setSelectedStation] = useState('');
   const [lines, setLines] = useState([]);
   const [stops, setStops] = useState([]);
 
@@ -58,6 +58,8 @@ const CommentPage = () => {
             selectedStation={selectedStation}
             lines={lines}
             stops={stops}
+            onSelectStation={onSelectStation} // Pass onSelectStation to MBTAMap
+
           />
         </div>
       </div>

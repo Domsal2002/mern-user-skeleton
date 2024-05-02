@@ -93,9 +93,6 @@ const PrivateUserProfile = () => {
                 <Modal.Title>Edit Profile</Modal.Title>
               </Modal.Header>
               <Modal.Body>
-              <div className="mb3">
-                  <label htmlFor="picture" className="form-label">Picture</label>
-                </div>
                 <div className="mb-3">
                   <label htmlFor="username" className="form-label">Username</label>
                   <input

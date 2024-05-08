@@ -6,16 +6,41 @@ POST http://localhost:8081/user/signup
 Content-Type: application/json 
 
 {
-    "username" : "admintest",
+    "username" : "test_admin",
     "email" : "cdon@gmail.com",
+<<<<<<< Updated upstream
     "password" : "tochi12345"
+}
+
+#Promote User 
+POST http://localhost:8081/admin/grantAdmin/admintest
+Content-Type: application/json
+
+
+
+
+###
+###
+
+POST http://localhost:8080/user/login
+Content-Type: application/json 
+
+{
+    "username" : "tochiamanze",
+    "password" : "tochi12345"
+=======
+    "password" : "12345678"
+>>>>>>> Stashed changes
 }
 
 ###
 GET http://localhost:8081/user/getAll
 Content-Type: application/json
 
+<<<<<<< Updated upstream
 
+=======
+>>>>>>> Stashed changes
 ###
 POST http://localhost:8081/user/editUser
 Content-Type: application/json 
@@ -28,6 +53,8 @@ Content-Type: application/json
 
 ###
 POST http://localhost:8080/user/login
+<<<<<<< Updated upstream
+=======
 Content-Type: application/json 
 
 {
@@ -37,10 +64,22 @@ Content-Type: application/json
 
 ###
 GET  http://localhost:8081/user/getUserById
+>>>>>>> Stashed changes
 Content-Type: application/json 
 
 {
-    "userId" : "635ab8dfc407faf9f73deaf1"
+    "username" : "tochiamanze",
+    "password" : "tochi12345"
+}
+
+<<<<<<< Updated upstream
+###
+POST http://localhost:8080/user/login
+Content-Type: application/json 
+
+{
+    "username" : "tochiamanze",
+    "password" : "tochi12345"
 }
 
 ##################################################################
@@ -48,28 +87,22 @@ Content-Type: application/json
 
 POST http://localhost:8081/admin/grantAdmin
 Content-Type: application/json 
+=======
+##################################################################
+#######################Admin Routes#############################
+>>>>>>> Stashed changes
 
-{
-    "username": "test_admin"
-}
-
-###
-GET http://localhost:8081/admin/getAllAdmins
+POST http://localhost:8081/admin/grantAdmin/admintest
 Content-Type: application/json
-
-###
-DELETE http://localhost:8081/admin/deleteAdmin
-Content-Type: application/json
-
-{
-    "username": "test_admin"
-}
-
 
 ##################################################################
 #######################Comment Routes#############################
 
+<<<<<<< HEAD
 POST http://localhost:8081/comment/postComment/Red
+=======
+POST http://localhost:8081/comment/postComment
+>>>>>>> 401853d10d0b2d531d215fb0f532a90ea555592a
 Content-Type: application/json
 
 {

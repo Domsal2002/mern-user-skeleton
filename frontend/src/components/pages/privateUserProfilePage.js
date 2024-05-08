@@ -4,6 +4,8 @@ import Modal from "react-bootstrap/Modal";
 import { useNavigate } from "react-router-dom";
 import getUserInfo from "../../utilities/decodeJwt";
 
+
+
 const PrivateUserProfile = () => {
   const [show, setShow] = useState(false);
   const [user, setUser] = useState({});
@@ -37,7 +39,9 @@ const PrivateUserProfile = () => {
       setUser(userInfo);
       fetchUserProfile();
     }
+
   }, []);
+
 
   const handleUpdateProfile = async () => {
     try {
@@ -70,7 +74,7 @@ const PrivateUserProfile = () => {
   return (
     <div className="container">
       <div className="col-md-12 text-center">
-        <h1>{user.username}</h1>
+       <h1>{user.username}</h1>
         <div className="col-md-12 text-center">
           <>
             <Button className="me-2" onClick={handleShow}>
@@ -95,7 +99,7 @@ const PrivateUserProfile = () => {
                     type="text"
                     className="form-control"
                     id="username"
-                    value={username}
+                    value={username} readOnly
                     onChange={(e) => setUsername(e.target.value)}
                   />
                 </div>

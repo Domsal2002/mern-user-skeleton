@@ -8,6 +8,7 @@ Content-Type: application/json
 {
     "username" : "test_admin",
     "email" : "cdon@gmail.com",
+<<<<<<< Updated upstream
     "password" : "tochi12345"
 }
 
@@ -27,13 +28,19 @@ Content-Type: application/json
 {
     "username" : "tochiamanze",
     "password" : "tochi12345"
+=======
+    "password" : "12345678"
+>>>>>>> Stashed changes
 }
 
 ###
 GET http://localhost:8081/user/getAll
 Content-Type: application/json
 
+<<<<<<< Updated upstream
 
+=======
+>>>>>>> Stashed changes
 ###
 POST http://localhost:8081/user/editUser
 Content-Type: application/json 
@@ -46,6 +53,8 @@ Content-Type: application/json
 
 ###
 POST http://localhost:8080/user/login
+<<<<<<< Updated upstream
+=======
 Content-Type: application/json 
 
 {
@@ -53,6 +62,17 @@ Content-Type: application/json
     "password" : "tochi12345"
 }
 
+###
+GET  http://localhost:8081/user/getUserById
+>>>>>>> Stashed changes
+Content-Type: application/json 
+
+{
+    "username" : "tochiamanze",
+    "password" : "tochi12345"
+}
+
+<<<<<<< Updated upstream
 ###
 POST http://localhost:8080/user/login
 Content-Type: application/json 
@@ -67,18 +87,17 @@ Content-Type: application/json
 
 POST http://localhost:8081/admin/grantAdmin
 Content-Type: application/json 
+=======
+##################################################################
+#######################Admin Routes#############################
+>>>>>>> Stashed changes
 
-{
-    "userId" : "634edb2a16710b2cda6fb370"
-}
+POST http://localhost:8081/admin/grantAdmin/admintest
+Content-Type: application/json
 
-###
-POST  http://localhost:8081/user/deleteAll
+##################################################################
+#######################Comment Routes#############################
 
-
-// START Comment CRUD request testing ~~~~~~~~~~~~~~~~~~~~~~
-###
-// CREATE A COMMENT
 POST http://localhost:8081/comment/postComment
 Content-Type: application/json
 

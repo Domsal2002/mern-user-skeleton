@@ -40,7 +40,7 @@ const Login = () => {
         try {
             const { data: res } = await axios.post(`${process.env.REACT_APP_BACKEND_SERVER_URI}/user/login`, data);
             localStorage.setItem("accessToken", res.accessToken);
-            navigate("/home");
+            navigate("/privateUserProfile");
         } catch (error) {
             if (error.response && error.response.status >= 400 && error.response.status <= 500) {
                 setError(error.response.data.message);
@@ -65,7 +65,7 @@ const Login = () => {
     };
 
     if (user) {
-        navigate('/home');
+        navigate('/privateUserProfile');
         return null;
     }
 

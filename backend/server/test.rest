@@ -69,7 +69,7 @@ Content-Type: application/json
 ##################################################################
 #######################Comment Routes#############################
 
-POST http://localhost:8081/comment/postComment/Red Line
+POST http://localhost:8081/comment/postComment/Red
 Content-Type: application/json
 
 {
@@ -77,11 +77,20 @@ Content-Type: application/json
     "text": "This is a comment"
 }
 
+// GET COMMENTS BY LINE
+###
+GET http://localhost:8081/comment/getAll/Red
+Content-Type: application/json
+
+// GET COMMENTS BY LINE & STATION
+###
+GET http://localhost:8081/comment/getAll/Red/place-davis
+Content-Type: application/json
+
 // GET COMMENTS
 ###
 GET http://localhost:8081/comment/getAll
 Content-Type: application/json
-
 
 // UPDATE A COMMENT
 ###

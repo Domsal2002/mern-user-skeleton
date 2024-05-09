@@ -46,8 +46,24 @@ Content-Type: application/json
 ##################################################################
 #######################Admin Routes#############################
 
-POST http://localhost:8081/admin/grantAdmin/admintest
+GET http://localhost:8081/admin/getAllAdmins
+
+###
+POST http://localhost:8081/admin/grantAdmin
 Content-Type: application/json
+
+{
+    "username" : "admintest"
+}
+
+###
+DELETE http://localhost:8081/admin/deleteAdmin
+Content-Type: application/json
+
+{
+    "username" : "test_admin"
+}   
+
 
 ##################################################################
 #######################Comment Routes#############################
